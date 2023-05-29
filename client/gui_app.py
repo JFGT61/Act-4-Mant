@@ -37,6 +37,10 @@ class Frame(tk.Frame):
         self.label_duracion.config(font=('Arial', 12, 'bold'))
         self.label_duracion.grid(row=1, column=0, padx=10, pady=10)
 
+        self.label_genero = tk.Label(self, text='Genero: ')
+        self.label_genero.config(font=('Arial', 12, 'bold'))
+        self.label_genero.grid(row=2, column=0, padx=10, pady=10)
+
         # Entrys de cada campo
         self.mi_nombre = tk.StringVar()
         self.entry_nombre = tk.Entry(self, textvariable = self.mi_nombre)
@@ -49,6 +53,14 @@ class Frame(tk.Frame):
             width=50, font=('Arial', 12))
         self.entry_duracion.grid(
             row=1, column=1, padx=10, pady=10, columnspan=2)
+
+        self.mi_genero = tk.StringVar()
+        self.entry_genero = tk.Entry(self, textvariable=self.mi_genero)
+        self.entry_genero.config(
+            width=50, font=('Arial', 12))
+        self.entry_genero.grid(row=2, column=1, padx=10, pady=10, columnspan=2)
+
+
 
         # Botones Nuevo
         self.boton_nuevo = tk.Button(self, text="Nuevo", command = self.habilitar_campos)
@@ -75,11 +87,11 @@ class Frame(tk.Frame):
     def habilitar_campos(self):
         self.mi_nombre.set('')
         self.mi_duracion.set('')
-        
+        self.mi_genero.set('')
 
         self.entry_nombre.config(state='normal')
         self.entry_duracion.config(state='normal')
-        
+        self.entry_genero.config(state='normal')
 
         self.boton_guardar.config(state='normal')
         self.boton_cancelar.config(state='normal')
@@ -89,11 +101,12 @@ class Frame(tk.Frame):
         
         self.mi_nombre.set('')
         self.mi_duracion.set('')
-        
+        self.mi_genero.set('')
 
         self.entry_nombre.config(state='disabled')
         self.entry_duracion.config(state='disabled')
-        
+        self.entry_genero.config(state='disabled')
+
         self.boton_guardar.config(state='disabled')
         self.boton_cancelar.config(state='disabled')
     
@@ -102,7 +115,7 @@ class Frame(tk.Frame):
         self.pelicula = Pelicula(
             self.mi_nombre.get(),
             self.mi_duracion.get(),
-            
+            self.mi_genero.get(),
         )
 
         if self.id_pelicula == None:
@@ -122,7 +135,7 @@ class Frame(tk.Frame):
 
 
         self.tabla  = ttk.Treeview(self, 
-        column = ('Nombre', 'Duracion'))
+        column = ('Nombre', 'Duracion', 'Genero'))
         self.tabla.grid(row=4, column=0, columnspan=4, sticky='nse')
 
         # Scrollbar para la tabla si exede 10 registros
@@ -134,11 +147,12 @@ class Frame(tk.Frame):
         self.tabla.heading('#0', text='ID')
         self.tabla.heading('#1', text='NOMBRE')
         self.tabla.heading('#2', text='DURACIÓN')
-        
+        self.tabla.heading('#3', text='GENERO')
+
         # Iterar la lista de peliculas
         for p in self.lista_peliculas:
             self.tabla.insert('',0, text=p[0], 
-            values = (p[1], p[2]))
+            values = (p[1], p[2], p[3]))
 
         # Botones Editar
         self.boton_editar = tk.Button(self, text="Editar", command = self.editar_datos)
@@ -168,7 +182,7 @@ class Frame(tk.Frame):
 
             self.entry_nombre.insert(0, self.nombre_pelicula)
             self.entry_duracion.insert(0, self.duracion_pelicula)
-            
+            self.entry_genero.insert(0, self.genero_pelicula)
             
         except:
             titulo = 'Edición de datos'
